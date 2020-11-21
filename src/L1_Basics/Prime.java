@@ -1,10 +1,14 @@
 package L1_Basics;
 
+import java.util.Scanner;
+
 public class Prime {
 
 	public static void main(String[] args) {
 
-		int n = 13;
+		Scanner scn = new Scanner(System.in) ;
+		
+		int n = scn.nextInt() ;
 
 		int factors = 0;
 
