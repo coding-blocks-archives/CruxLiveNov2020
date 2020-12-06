@@ -1,4 +1,4 @@
-package L7_Array2D;
+package L8_Array2D;
 
 public class Array2DDemo {
 
