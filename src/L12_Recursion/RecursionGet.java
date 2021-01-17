@@ -1,6 +1,7 @@
 package L12_Recursion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecursionGet {
 
@@ -13,8 +14,10 @@ public class RecursionGet {
 		// System.out.println(coinToss(3));
 
 		// System.out.println(climbingStairs(0, 3));
-		
-		System.out.println(mazePath(0, 0, 2, 2));
+
+		// System.out.println(mazePath(0, 0, 2, 2));
+
+		System.out.println(diffWaysAddParenthesis("2+6-5*8+9-5"));
 
 	}
 
@@ -233,4 +236,45 @@ public class RecursionGet {
 
 	}
 
+	public static List<Integer> diffWaysAddParenthesis(String str) {
+
+		List<Integer> mr = new ArrayList<Integer>();
+
+		// operator is not present
+		if (str.indexOf('+') == -1 && str.indexOf('-') == -1 && str.indexOf('*') == -1) {
+			mr.add(Integer.parseInt(str));
+			return mr;
+		}
+
+		for (int i = 0; i < str.length(); i++) {
+
+			char ch = str.charAt(i);
+			if (ch == '+' || ch == '-' || ch == '*') {
+
+				// ith char is an operator : + - *
+				List<Integer> rr1 = diffWaysAddParenthesis(str.substring(0, i)); // ith index pahle waali string
+				List<Integer> rr2 = diffWaysAddParenthesis(str.substring(i + 1)); // i+1 index ke baad ki saari string
+																					// aa gyi
+
+				for (int val1 : rr1) {
+
+					for (int val2 : rr2) {
+
+						if (ch == '+') {
+							mr.add(val1 + val2);
+						} else if (ch == '*') {
+							mr.add(val1 * val2);
+						} else if (ch == '-') {
+							mr.add(val1 - val2);
+						}
+					}
+
+				}
+
+			}
+		}
+
+		return mr;
+
+	}
 }
