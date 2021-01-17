@@ -7,9 +7,11 @@ public class TimeSpaceOps {
 	public static void main(String[] args) {
 
 		// System.out.println(polynomial3(3, 7));
-		//System.out.println(power(2, 15));
+		// System.out.println(power(2, 15));
+
+		// SOE(100);
 		
-		SOE(100) ;
+		System.out.println(countPalindromicSS("nitinn"));
 	}
 
 	public static int polynomial(int x, int n) {
@@ -94,12 +96,49 @@ public class TimeSpaceOps {
 
 			}
 		}
-		
-		for(int i = 0 ; i < primes.length ; i++) {
-			
-			if(primes[i])
+
+		for (int i = 0; i < primes.length; i++) {
+
+			if (primes[i])
 				System.out.println(i);
 		}
 
 	}
+
+	public static int countPalindromicSS(String str) {
+
+		int count = 0;
+
+		// odd length palindromic ss
+		for (int axis = 0; axis < str.length(); axis++) {
+
+			for (int orbit = 0; axis - orbit >= 0 && axis + orbit < str.length(); orbit++) {
+
+				if (str.charAt(axis - orbit) == str.charAt(axis + orbit)) {
+					count++;
+				} else {
+					break;
+				}
+			}
+
+		}
+
+		// even length palindromic ss
+		for (double axis = 0.5; axis < str.length(); axis++) {
+
+			for (double orbit = 0.5; axis - orbit >= 0 && axis + orbit < str.length(); orbit++) {
+
+				if (str.charAt((int) (axis - orbit)) == str.charAt((int) (axis + orbit))) {
+					count++;
+				} else {
+					break;
+				}
+			}
+
+		}
+		
+		return count ;
+
+	}
+
 }
