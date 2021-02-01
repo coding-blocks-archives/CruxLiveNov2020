@@ -70,7 +70,6 @@ public class FunctionDemo {
 	public static int additionReturn(int a, int b) {
 
 		int sum = a + b;
-
 		return sum;
 
 	}
