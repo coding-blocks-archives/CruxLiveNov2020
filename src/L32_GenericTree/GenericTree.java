@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class GenericTree {
 
@@ -294,61 +295,91 @@ public class GenericTree {
 		while (!q.isEmpty()) {
 
 			// remove
-			Node rn = q.remove() ;
-			
+			Node rn = q.remove();
+
 			// print
 			System.out.print(rn.data + " ");
-			
+
 			// child enqueue
-			for(Node child : rn.children)
-				q.add(child) ;
-			
+			for (Node child : rn.children)
+				q.add(child);
+
 		}
-		
+
 		System.out.println();
 	}
-	
+
 	public void levelorderLinewise() {
 
 		Queue<Node> q = new LinkedList<>();
 		Queue<Node> h = new LinkedList<>();
-		
+
 		q.add(root);
 
 		while (!q.isEmpty()) {
 
 			// remove
-			Node rn = q.remove() ;
-			
+			Node rn = q.remove();
+
 			// print
 			System.out.print(rn.data + " ");
-			
+
 			// child enqueue
-			for(Node child : rn.children)
-				h.add(child) ;
-			
-			if(q.isEmpty()) {
+			for (Node child : rn.children)
+				h.add(child);
+
+			if (q.isEmpty()) {
 				System.out.println();
-				q = h ;
-				h = new LinkedList<>() ;
+				q = h;
+				h = new LinkedList<>();
 			}
-			
+
 		}
-		
+
 		System.out.println();
 	}
 
+	public void levelorderZigZag() {
+
+		Stack<Node> s = new Stack<>();
+		Stack<Node> h = new Stack<>();
+
+		int c = 0;
+
+		s.add(root);
+
+		while (!s.isEmpty()) {
+
+			// remove
+			Node rn = s.pop();
+
+			// print
+			System.out.print(rn.data + " ");
+
+			// child
+			if (c % 2 == 0) {
+
+				for (Node child : rn.children)
+					h.push(child);
+
+			} else {
+
+				for(int i = rn.children.size()-1 ; i >=0 ; i--)
+					h.push(rn.children.get(i)) ;
+			}
+			
+			// s empty
+			if(s.isEmpty()) {
+				
+				System.out.println();
+				c++ ;
+				s = h ;
+				h = new Stack<>() ;
+				
+			}
+			
+
+		}
+
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

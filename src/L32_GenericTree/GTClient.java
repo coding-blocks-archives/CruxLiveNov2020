@@ -22,7 +22,8 @@ public class GTClient {
 		// gt.display2();
 		
 		// gt.postorder();
-		gt.levelorderLinewise();
+		// gt.levelorderLinewise();
+		gt.levelorderZigZag();
 
 	}
 
