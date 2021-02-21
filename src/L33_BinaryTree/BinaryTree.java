@@ -62,6 +62,30 @@ public class BinaryTree {
 
 	private Node construct(int[] pre, int plo, int phi, int[] in, int ilo, int ihi) {
 
+		if(plo > phi || ilo > ihi)
+			return null ;
+		
+		Node nn = new Node();
+		nn.data = pre[plo];
+
+		int si = -1;
+		int nel = 0;
+
+		for (int i = ilo; i <= ihi; i++) {
+
+			if (in[i] == pre[plo]) {
+				si = i;
+				break;
+			}
+
+			nel++;
+		}
+
+		nn.left = construct(pre, plo + 1, plo + nel, in, ilo, si - 1);
+		nn.right = construct(pre, plo + nel + 1, phi, in, si + 1, ihi);
+
+		return nn;
+
 	}
 
 	public void display() {
