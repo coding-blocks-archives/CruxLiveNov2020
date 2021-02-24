@@ -552,4 +552,22 @@ public class BinaryTree {
 
 	}
 
+	public boolean isBST() {
+		return isBST(root) ;
+	}
+
+	private boolean isBST(Node node) {
+	
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
