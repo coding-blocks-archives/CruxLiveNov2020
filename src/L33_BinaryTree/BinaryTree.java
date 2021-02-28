@@ -62,9 +62,9 @@ public class BinaryTree {
 
 	private Node construct(int[] pre, int plo, int phi, int[] in, int ilo, int ihi) {
 
-		if(plo > phi || ilo > ihi)
-			return null ;
-		
+		if (plo > phi || ilo > ihi)
+			return null;
+
 		Node nn = new Node();
 		nn.data = pre[plo];
 
@@ -552,22 +552,88 @@ public class BinaryTree {
 
 	}
 
-	public boolean isBST() {
-		return isBST(root) ;
+	public int min() {
+		return min(root);
 	}
 
-	private boolean isBST(Node node) {
-	
-		
-		
-		
+	private int min(Node node) {
+
+		if (node == null)
+			return Integer.MAX_VALUE;
+
+		int lm = min(node.left);
+		int rm = min(node.right);
+
+		return Math.min(node.data, Math.min(lm, rm));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public boolean isBST2() {
+		return isBST2(root);
+	}
+
+	private boolean isBST2(Node node) {
+
+		if (node == null)
+			return true;
+
+		boolean lbst = isBST2(node.left);
+		boolean rbst = isBST2(node.right);
+
+		if (node.data > max(node.left) && node.data < min(node.right) && lbst && rbst)
+			return true;
+		else
+			return false;
+
+	}
+
+	private class BSTPair {
+
+		boolean isbst = true;
+		int max = Integer.MIN_VALUE;
+		int min = Integer.MAX_VALUE;
+
+		Node largestBSTRootNode = null;
+		int largestBSTSize = 0;
+
+	}
+
+	public void isBST3() {
+		BSTPair res = isBST3(root);
+		System.out.println(res.largestBSTRootNode.data);
+		System.out.println(res.largestBSTSize);
+	}
+
+	private BSTPair isBST3(Node node) {
+
+		if (node == null)
+			return new BSTPair();
+
+		BSTPair lp = isBST3(node.left);
+		BSTPair rp = isBST3(node.right);
+
+		BSTPair sp = new BSTPair();
+
+		if (node.data > lp.max && node.data < rp.min && lp.isbst && rp.isbst) {
+			sp.isbst = true;
+			sp.largestBSTRootNode = node;
+			sp.largestBSTSize = lp.largestBSTSize + rp.largestBSTSize + 1;
+		} else {
+			sp.isbst = false;
+
+			if (lp.largestBSTSize > rp.largestBSTSize) {
+				sp.largestBSTRootNode = lp.largestBSTRootNode;
+				sp.largestBSTSize = lp.largestBSTSize;
+			} else {
+				sp.largestBSTRootNode = rp.largestBSTRootNode;
+				sp.largestBSTSize = rp.largestBSTSize;
+			}
+		}
+
+		sp.max = Math.max(node.data, Math.max(lp.max, rp.max));
+		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
+
+		return sp;
+
+	}
+
 }
