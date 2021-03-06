@@ -6,10 +6,14 @@ public class HashMapOps {
 
 	public static void main(String[] args) {
 
-		int[] one = { 20, 30, 50, 50, 60, 20, 30, 20 };
-		int[] two = { 20, 80, 20, 90, 20, 20, 30 };
+//		int[] one = { 20, 30, 50, 50, 60, 20, 30, 20 };
+//		int[] two = { 20, 80, 20, 90, 20, 20, 30 };
+//
+//		intersection(one, two);
 
-		intersection(one, two);
+		int[] arr = { 2, 12, 9, 16, 10, 5, 3, 20, 25, 11, 1, 8, 6 };
+
+		longestConsecutiveSeq(arr);
 	}
 
 	public static void intersection(int[] one, int[] two) {
@@ -44,4 +48,45 @@ public class HashMapOps {
 
 	}
 
+	public static void longestConsecutiveSeq(int[] arr) {
+
+		HashMap<Integer, Boolean> map = new HashMap<>();
+
+		for (int key : arr) {
+
+			if (map.containsKey(key - 1)) {
+				map.put(key, false);
+			} else {
+				map.put(key, true);
+			}
+
+			if (map.containsKey(key + 1))
+				map.put(key + 1, false);
+		}
+
+		int max = 0;
+		int sp = 0;
+
+		for (int key : map.keySet()) {
+
+			if (map.get(key)) {
+
+				int count = 0;
+
+				while (map.containsKey(key + count))
+					count++;
+
+				if (count > max) {
+					max = count;
+					sp = key;
+				}
+
+			}
+
+		}
+
+		for (int i = sp; i < sp + max; i++)
+			System.out.println(i);
+
+	}
 }
