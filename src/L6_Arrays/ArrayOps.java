@@ -8,7 +8,6 @@ public class ArrayOps {
 
 	public static void main(String[] args) {
 
-
 		int[] a = { 10, -20, 30, 40 };
 		// display(a);
 		// reverse(a);
@@ -59,7 +58,7 @@ public class ArrayOps {
 
 		return max;
 	}
-	
+
 	//
 	// public static int search(int[] arr, int item) {
 	//

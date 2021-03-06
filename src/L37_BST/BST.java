@@ -1,4 +1,4 @@
-package L35_BST;
+package L37_BST;
 
 public class BST {
 

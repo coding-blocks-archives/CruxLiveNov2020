@@ -1,4 +1,4 @@
-package L32_GenericTree;
+package L33_GenericTree;
 
 public class GTClient {
 

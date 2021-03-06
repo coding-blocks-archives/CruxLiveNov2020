@@ -1,4 +1,4 @@
-package L33_BinaryTree;
+package L34_BinaryTree;
 
 import java.util.Scanner;
 import java.util.Stack;
