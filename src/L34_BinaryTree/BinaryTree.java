@@ -1,5 +1,10 @@
 package L34_BinaryTree;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -633,6 +638,64 @@ public class BinaryTree {
 		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
 
 		return sp;
+
+	}
+
+	private class VOPair {
+
+		Node node;
+		int vl;
+
+		public VOPair(Node node, int vl) {
+			this.node = node;
+			this.vl = vl;
+		}
+
+		@Override
+		public String toString() {
+			return node.data + " -> " + vl;
+		}
+	}
+
+	public void verticalOrderTraversal() {
+
+		HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+
+		Queue<VOPair> q = new LinkedList<>();
+
+		VOPair sp = new VOPair(root, 0);
+		q.add(sp);
+
+		while (!q.isEmpty()) {
+
+			VOPair rp = q.remove();
+
+			if (!map.containsKey(rp.vl))
+				map.put(rp.vl, new ArrayList<>());
+
+			map.get(rp.vl).add(rp.node.data);
+
+			if (rp.node.left != null) {
+
+				VOPair lcp = new VOPair(rp.node.left, rp.vl - 1);
+				q.add(lcp);
+
+			}
+
+			if (rp.node.right != null) {
+
+				VOPair rcp = new VOPair(rp.node.right, rp.vl + 1);
+				q.add(rcp);
+
+			}
+
+		}
+
+		ArrayList<Integer> keys = new ArrayList<Integer>(map.keySet());
+		Collections.sort(keys);
+
+		for (int key : keys)
+			System.out.println(key + " -> " + map.get(key));
 
 	}
 
