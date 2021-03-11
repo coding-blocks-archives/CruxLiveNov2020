@@ -1,5 +1,7 @@
 package L44_Graph;
 
+import java.util.HashSet;
+
 public class GraphClient {
 
 	public static void main(String[] args) {
@@ -19,6 +21,9 @@ public class GraphClient {
 		
 		System.out.println(g.containsEdge(1, 2));
 		System.out.println(g.numEdges());
+		
+		g.removeEdge(4, 5);
+		System.out.println(g.hasPath(1, 6, new HashSet<Integer>()));
 		
 		
 

@@ -1,6 +1,7 @@
 package L44_Graph;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Graph {
 
@@ -50,7 +51,29 @@ public class Graph {
 		}
 	}
 
-	public boolean hasPath(int v1, int v2) {
+	public boolean hasPath(int src, int dst, HashSet<Integer> visited) {
+
+		// mark your src as visited
+		visited.add(src);
+
+		// if src and dst are = then you have found a path
+		if (src == dst)
+			return true;
+
+		// check if path exists via nbrs
+		for (int nbr : map.get(src).keySet()) {
+
+			if (!visited.contains(nbr)) {
+				
+				boolean res = hasPath(nbr, dst, visited);
+
+				if (res)
+					return true;
+			}
+
+		}
+
+		return false;
 
 	}
 }
