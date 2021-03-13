@@ -1,5 +1,6 @@
 package L44_Graph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -186,10 +187,10 @@ public class Graph {
 		Queue<Integer> q = new LinkedList<Integer>();
 
 		for (int src : map.keySet()) {
-			
-			if(visited.contains(src))
-				continue ;
-			
+
+			if (visited.contains(src))
+				continue;
+
 			q.add(src);
 
 			while (!q.isEmpty()) {
@@ -217,22 +218,22 @@ public class Graph {
 
 			}
 		}
-		
+
 		System.out.println();
 
 	}
-	
+
 	public void DFT() {
 
 		HashSet<Integer> visited = new HashSet<Integer>();
 
-		Stack<Integer> s = new Stack<Integer>() ;
+		Stack<Integer> s = new Stack<Integer>();
 
 		for (int src : map.keySet()) {
-			
-			if(visited.contains(src))
-				continue ;
-			
+
+			if (visited.contains(src))
+				continue;
+
 			s.push(src);
 
 			while (!s.isEmpty()) {
@@ -260,8 +261,143 @@ public class Graph {
 
 			}
 		}
-		
+
 		System.out.println();
+
+	}
+
+	public boolean isCyclic() {
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Queue<Integer> q = new LinkedList<Integer>();
+
+		for (int src : map.keySet()) {
+
+			if (visited.contains(src))
+				continue;
+
+			q.add(src);
+
+			while (!q.isEmpty()) {
+
+				// remove
+				int rn = q.remove();
+
+				// second time if a node is being removed then you can ignore it
+				if (visited.contains(rn))
+					return true;
+
+				// visited mark
+				visited.add(rn);
+
+				// nbrs
+				for (int nbr : map.get(rn).keySet()) {
+
+					if (!visited.contains(nbr)) {
+						q.add(nbr);
+					}
+				}
+
+			}
+		}
+
+		return false;
+
+	}
+
+	public boolean isConnected() {
+
+		int components = 0;
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Queue<Integer> q = new LinkedList<Integer>();
+
+		for (int src : map.keySet()) {
+
+			if (visited.contains(src))
+				continue;
+
+			components++;
+
+			q.add(src);
+
+			while (!q.isEmpty()) {
+
+				// remove
+				int rn = q.remove();
+
+				// second time if a node is being removed then you can ignore it
+				if (visited.contains(rn))
+					continue;
+
+				// visited mark
+				visited.add(rn);
+
+				// nbrs
+				for (int nbr : map.get(rn).keySet()) {
+
+					if (!visited.contains(nbr)) {
+						q.add(nbr);
+					}
+				}
+
+			}
+		}
+
+		return components == 1;
+	}
+
+	public boolean isTree() {
+		return !isCyclic() && isConnected();
+	}
+
+	public ArrayList<ArrayList<Integer>> getCC() {
+
+		ArrayList<ArrayList<Integer>> bl = new ArrayList<>();
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Queue<Integer> q = new LinkedList<Integer>();
+
+		for (int src : map.keySet()) {
+
+			if (visited.contains(src))
+				continue;
+
+			ArrayList<Integer> sl = new ArrayList<>();
+			bl.add(sl);
+
+			q.add(src);
+
+			while (!q.isEmpty()) {
+
+				// remove
+				int rn = q.remove();
+
+				// second time if a node is being removed then you can ignore it
+				if (visited.contains(rn))
+					continue;
+
+				// visited mark
+				visited.add(rn);
+
+				// add in small list
+				sl.add(rn);
+
+				// nbrs
+				for (int nbr : map.get(rn).keySet()) {
+
+					if (!visited.contains(nbr)) {
+						q.add(nbr);
+					}
+				}
+
+			}
+		}
+
+		return bl;
 
 	}
 
