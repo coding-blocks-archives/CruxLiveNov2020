@@ -2,6 +2,9 @@ package L44_Graph;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 public class Graph {
 
@@ -64,7 +67,7 @@ public class Graph {
 		for (int nbr : map.get(src).keySet()) {
 
 			if (!visited.contains(nbr)) {
-				
+
 				boolean res = hasPath(nbr, dst, visited);
 
 				if (res)
@@ -76,4 +79,190 @@ public class Graph {
 		return false;
 
 	}
+
+	public void printAllPaths(int src, int dst, HashSet<Integer> visited, String str) {
+
+		// mark your src as visited
+		visited.add(src);
+
+		// if src and dst are = then you will print
+		if (src == dst)
+			System.out.println(str);
+
+		// check if path exists via nbrs
+		for (int nbr : map.get(src).keySet()) {
+
+			if (!visited.contains(nbr)) {
+
+				printAllPaths(nbr, dst, visited, str + nbr);
+
+			}
+
+		}
+
+		// undo
+		visited.remove(src);
+
+	}
+
+	public boolean BFS(int src, int dst) {
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(src);
+
+		while (!q.isEmpty()) {
+
+			// remove
+			int rn = q.remove();
+
+			// second time if a node is being removed then you can ignore it
+			if (visited.contains(rn))
+				continue;
+
+			// visited mark
+			visited.add(rn);
+
+			// rn = dst
+			if (rn == dst)
+				return true;
+
+			// nbrs
+			for (int nbr : map.get(rn).keySet()) {
+
+				if (!visited.contains(nbr)) {
+					q.add(nbr);
+				}
+			}
+
+		}
+
+		return false;
+
+	}
+
+	public boolean DFS(int src, int dst) {
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Stack<Integer> s = new Stack<Integer>();
+		s.push(src);
+
+		while (!s.isEmpty()) {
+
+			// remove
+			int rn = s.pop();
+
+			// second time if a node is being removed then you can ignore it
+			if (visited.contains(rn))
+				continue;
+
+			// visited mark
+			visited.add(rn);
+
+			// rn = dst
+			if (rn == dst)
+				return true;
+
+			// nbrs
+			for (int nbr : map.get(rn).keySet()) {
+
+				if (!visited.contains(nbr)) {
+					s.push(nbr);
+				}
+			}
+
+		}
+
+		return false;
+
+	}
+
+	public void BFT() {
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Queue<Integer> q = new LinkedList<Integer>();
+
+		for (int src : map.keySet()) {
+			
+			if(visited.contains(src))
+				continue ;
+			
+			q.add(src);
+
+			while (!q.isEmpty()) {
+
+				// remove
+				int rn = q.remove();
+
+				// second time if a node is being removed then you can ignore it
+				if (visited.contains(rn))
+					continue;
+
+				// visited mark
+				visited.add(rn);
+
+				// print
+				System.out.print(rn + " ");
+
+				// nbrs
+				for (int nbr : map.get(rn).keySet()) {
+
+					if (!visited.contains(nbr)) {
+						q.add(nbr);
+					}
+				}
+
+			}
+		}
+		
+		System.out.println();
+
+	}
+	
+	public void DFT() {
+
+		HashSet<Integer> visited = new HashSet<Integer>();
+
+		Stack<Integer> s = new Stack<Integer>() ;
+
+		for (int src : map.keySet()) {
+			
+			if(visited.contains(src))
+				continue ;
+			
+			s.push(src);
+
+			while (!s.isEmpty()) {
+
+				// remove
+				int rn = s.pop();
+
+				// second time if a node is being removed then you can ignore it
+				if (visited.contains(rn))
+					continue;
+
+				// visited mark
+				visited.add(rn);
+
+				// print
+				System.out.print(rn + " ");
+
+				// nbrs
+				for (int nbr : map.get(rn).keySet()) {
+
+					if (!visited.contains(nbr)) {
+						s.push(nbr);
+					}
+				}
+
+			}
+		}
+		
+		System.out.println();
+
+	}
+
 }

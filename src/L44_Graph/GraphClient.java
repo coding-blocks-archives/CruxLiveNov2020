@@ -22,8 +22,13 @@ public class GraphClient {
 		System.out.println(g.containsEdge(1, 2));
 		System.out.println(g.numEdges());
 		
-		g.removeEdge(4, 5);
-		System.out.println(g.hasPath(1, 6, new HashSet<Integer>()));
+//		g.removeEdge(4, 5);
+//		System.out.println(g.hasPath(1, 6, new HashSet<Integer>()));
+		g.printAllPaths(1, 6, new HashSet<Integer>(), "1");
+		
+		System.out.println(g.DFS(1, 6));
+		g.BFT(); 
+		g.DFT();
 		
 		
 
