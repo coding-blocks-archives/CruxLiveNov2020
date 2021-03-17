@@ -1,9 +1,11 @@
 package L44_Graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -398,6 +400,270 @@ public class Graph {
 		}
 
 		return bl;
+
+	}
+
+	private class DisjointSet {
+
+		private class Node {
+			int data;
+			Node parent;
+			int rank;
+		}
+
+		private HashMap<Integer, Node> mapping = new HashMap<>();
+
+		public void create(int value) {
+
+			Node nn = new Node();
+			nn.data = value;
+			nn.parent = nn;
+			nn.rank = 0;
+
+			mapping.put(value, nn);
+		}
+
+		public void union(int value1, int value2) {
+
+			Node n1 = mapping.get(value1);
+			Node n2 = mapping.get(value2);
+
+			Node re1 = find(n1);
+			Node re2 = find(n2);
+
+			if (re1 == re2)
+				return;
+			else {
+
+				if (re1.rank == re2.rank) {
+					re2.parent = re1;
+					re1.rank++;
+				} else if (re1.rank > re2.rank) {
+					re2.parent = re1;
+				} else {
+					re1.parent = re2;
+				}
+			}
+
+		}
+
+		public int find(int value) {
+
+			Node n = mapping.get(value);
+			return find(n).data;
+		}
+
+		private Node find(Node node) {
+
+			if (node.parent == node)
+				return node;
+
+			Node rr = find(node.parent);
+			node.parent = rr; // path compression
+			return rr;
+		}
+
+	}
+
+	private class EdgePair implements Comparable<EdgePair> {
+
+		int v1;
+		int v2;
+		int cost;
+
+		public EdgePair(int v1, int v2, int cost) {
+			this.v1 = v1;
+			this.v2 = v2;
+			this.cost = cost;
+		}
+
+		@Override
+		public int compareTo(EdgePair o) {
+			return this.cost - o.cost;
+		}
+
+		@Override
+		public String toString() {
+			return v1 + "-" + v2 + "@" + cost;
+		}
+	}
+
+	public ArrayList<EdgePair> getAllEdges() {
+
+		ArrayList<EdgePair> edges = new ArrayList<>();
+
+		for (int vertex : map.keySet()) {
+
+			for (int nbr : map.get(vertex).keySet()) {
+
+				EdgePair np = new EdgePair(vertex, nbr, map.get(vertex).get(nbr));
+				edges.add(np);
+			}
+
+		}
+
+		return edges;
+
+	}
+
+	public void kruskal() {
+
+		DisjointSet ds = new DisjointSet();
+
+		// create a new set for all the vertices
+		for (int vertex : map.keySet()) {
+			ds.create(vertex);
+		}
+
+		// get all edges
+		ArrayList<EdgePair> edges = getAllEdges();
+		// edges sort on the basis of cost
+		Collections.sort(edges);
+
+		for (EdgePair e : edges) {
+
+			int re1 = ds.find(e.v1);
+			int re2 = ds.find(e.v2);
+
+			if (re1 == re2) {
+				// do nothing
+			} else {
+				System.out.println(e);
+				ds.union(e.v1, e.v2);
+			}
+
+		}
+
+	}
+
+	private class PrimsPair implements Comparable<PrimsPair> {
+
+		int vname;
+		int acqvname;
+		int cost;
+
+		public PrimsPair(int vname, int acqvname, int cost) {
+			this.vname = vname;
+			this.acqvname = acqvname;
+			this.cost = cost;
+		}
+
+		@Override
+		public String toString() {
+			return vname + " via " + acqvname + " @ " + cost;
+		}
+
+		@Override
+		public int compareTo(PrimsPair o) {
+			return this.cost - o.cost;
+		}
+	}
+
+	public void prims() {
+
+		PriorityQueue<PrimsPair> pq = new PriorityQueue<>();
+		boolean[] visited = new boolean[map.size() + 1];
+
+		// create a starting pair
+		PrimsPair sp = new PrimsPair(1, 0, 0);
+		// put pair in priority queue
+		pq.add(sp);
+
+		// work till pq is not empty
+		while (!pq.isEmpty()) {
+
+			// remove the pair with minimum cost
+			PrimsPair rp = pq.remove();
+
+			// if removed vertex is already visited then ignore it
+			if (visited[rp.vname])
+				continue;
+
+			// visited mark
+			visited[rp.vname] = true;
+
+			// printing
+			if (rp.acqvname != 0)
+				System.out.println(rp);
+
+			// work for nbrs
+			for (int nbr : map.get(rp.vname).keySet()) {
+
+				// work only for unvisited nbrs
+				if (!visited[nbr]) {
+
+					// make a pair for nbr and put in priority queue
+					PrimsPair np = new PrimsPair(nbr, rp.vname, map.get(rp.vname).get(nbr));
+					pq.add(np);
+				}
+			}
+
+		}
+
+	}
+
+	private class DijkstraPair implements Comparable<DijkstraPair> {
+
+		int vname;
+		String psf;
+		int csf;
+
+		public DijkstraPair(int vname, String acqvname, int cost) {
+			this.vname = vname;
+			this.psf = acqvname;
+			this.csf = cost;
+		}
+
+		@Override
+		public String toString() {
+			return vname + " via " + psf + " @ " + csf;
+		}
+
+		@Override
+		public int compareTo(DijkstraPair o) {
+			return this.csf - o.csf;
+		}
+	}
+
+	public void dijkstra(int src) {
+
+		PriorityQueue<DijkstraPair> pq = new PriorityQueue<>();
+		boolean[] visited = new boolean[map.size() + 1];
+
+		// create a starting pair
+		DijkstraPair sp = new DijkstraPair(src, src + "", 0);
+		// put pair in priority queue
+		pq.add(sp);
+
+		// work till pq is not empty
+		while (!pq.isEmpty()) {
+
+			// remove the pair with minimum cost
+			DijkstraPair rp = pq.remove();
+
+			// if removed vertex is already visited then ignore it
+			if (visited[rp.vname])
+				continue;
+
+			// visited mark
+			visited[rp.vname] = true;
+
+			// printing
+			System.out.println(rp);
+
+			// work for nbrs
+			for (int nbr : map.get(rp.vname).keySet()) {
+
+				// work only for unvisited nbrs
+				if (!visited[nbr]) {
+
+					// make a pair for nbr and put in priority queue
+					DijkstraPair np = new DijkstraPair(nbr, rp.psf + nbr, rp.csf + map.get(rp.vname).get(nbr));
+					pq.add(np);
+				}
+			}
+
+		}
 
 	}
 
