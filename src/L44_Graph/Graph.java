@@ -1,6 +1,7 @@
 package L44_Graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class Graph {
 	public void addEdge(int v1, int v2, int cost) {
 
 		map.get(v1).put(v2, cost);
-		map.get(v2).put(v1, cost);
+		// map.get(v2).put(v1, cost);
 
 	}
 
@@ -663,6 +664,98 @@ public class Graph {
 				}
 			}
 
+		}
+
+	}
+
+	public void bellmanFord(int src) {
+
+		int V = map.size();
+
+		// creating and filling the distance array
+		int[] dist = new int[V + 1];
+		Arrays.fill(dist, 100000);
+		dist[src] = 0;
+
+		ArrayList<EdgePair> edges = getAllEdges();
+
+		// relax V times
+		for (int i = 1; i <= V; i++) {
+
+			for (EdgePair edge : edges) {
+
+				int oc = dist[edge.v2];
+				int nc = dist[edge.v1] + edge.cost;
+
+				if (nc < oc) {
+
+					if (i <= V - 1)
+						dist[edge.v2] = nc;
+					else {
+						System.out.println("-ve wt cycle present");
+						return;
+					}
+
+				}
+
+			}
+
+		}
+
+		// distance array print
+		for (int i = 1; i <= V; i++) {
+			System.out.println(i + " -> " + dist[i]);
+		}
+
+	}
+
+	public void floydWarshall() {
+
+		int V = map.size();
+
+		int[][] dist = new int[V + 1][V + 1];
+
+		for (int i = 1; i < dist.length; i++) {
+			for (int j = 1; j < dist[0].length; j++) {
+
+				if (i == j)
+					dist[i][j] = 0;
+				else
+					dist[i][j] = 100000;
+			}
+		}
+
+		for (int vertex : map.keySet()) {
+
+			for (int nbr : map.get(vertex).keySet()) {
+				dist[vertex][nbr] = map.get(vertex).get(nbr);
+			}
+
+		}
+
+		// logic ...
+		for (int k = 1; k <= V; k++) {
+
+			for (int i = 1; i <= V; i++) {
+				for (int j = 1; j <= V; j++) {
+
+					int oc = dist[i][j];
+					int nc = dist[i][k] + dist[k][j];
+
+					if (nc < oc)
+						dist[i][j] = nc;
+				}
+			}
+		}
+
+		// printing
+		for (int i = 1; i <= V; i++) {
+			for (int j = 1; j <= V; j++) {
+
+				System.out.print(dist[i][j] + "\t");
+			}
+
+			System.out.println();
 		}
 
 	}
