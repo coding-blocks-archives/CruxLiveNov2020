@@ -1,0 +1,233 @@
+package Nov_BitMasking_Qps;
+
+public class Avengers_End_Game {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int n = 999;
+
+		System.out.println(total_divisble(999));
+	}
+
+	public static int total_divisble(int n) {
+		int[] arr = { 2, 3, 5,7,11,13,17,19 };
+		int res=0;
+		for (int i = 1; i < (1 << arr.length); i++) {
+			int d1 = n/subset(arr, i);
+			if((Code_forces_Preparing_Olympiad.FastCountSetBit(i)&1)==1) {
+				res+=d1;
+			}
+			else {
+				res-=d1;
+			}
+		}
+		return res;
+	}
+
+	public static int  subset(int[] arr, int i) {
+
+		int pos = 0;
+		int ans = 1;
+		while (i != 0) {
+			if ((i & 1) == 1) {
+				ans *= arr[pos];
+			}
+			pos++;
+			i >>= 1;
+		}
+		return ans;
+	}
+
+}
+
+
+package Nov_BitMasking_Qps;
+
+import java.util.Scanner;
+
+public class Code_forces_Preparing_Olympiad {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int l = sc.nextInt();
+		int r = sc.nextInt();
+		int x = sc.nextInt();
+		int[] diff_level = new int[n];
+		for (int i = 0; i < diff_level.length; i++) {
+			diff_level[i] = sc.nextInt();
+
+		}
+		System.out.println(Preparing_Olympiadd(diff_level,l,r,x));
+	}
+
+	private static int  Preparing_Olympiadd(int[] diff_level, int l, int r, int x) {
+		// TODO Auto-generated method stub
+		int ans=0;
+		for(int i=0; i<(1<<diff_level.length); i++) {
+			if(FastCountSetBit(i)>=2) {
+				if(isitpossible(diff_level,i,l,r,x)) {
+					ans++;
+				}
+			}
+		}
+		return ans;
+	}
+	private static boolean isitpossible(int[] diff_level,int i, int l, int r, int x) {
+		// TODO Auto-generated method stub
+		int sum=0;
+		int min=Integer.MAX_VALUE;
+		int max=Integer.MIN_VALUE;
+		int pos=0;
+		while(i!=0) {
+			if((i&1)==1) {
+				sum+=diff_level[pos];
+				min=Math.min(min, diff_level[pos]);
+				max=Math.max(max, diff_level[pos]);
+			}
+			pos++;
+			i>>=1;
+		}
+		
+		return sum>=l && sum<=r && max-min>=x;
+	}
+
+	public static int FastCountSetBit(int n) {
+		int count=0;
+		while(n!=0) {
+			count++;
+			n=(n&(n-1));
+		}
+		return count;
+	}
+	public static void print_Pattern(int arr[],int i) {
+		int pos=0;
+		while(i!=0) {
+			if((i&1)==1) {
+				System.out.print(arr[pos]+" ");
+			}
+			pos++;
+			i>>=1;
+		}
+		System.out.println();
+	}
+
+}
+
+
+
+
+package Nov_BitMasking_Qps;
+
+import java.util.Scanner;
+
+public class Tavas_and_SaDDas {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		String str = sc.next();
+		System.out.println(TavasandSaDDas(str));
+	}
+
+	public static int TavasandSaDDas(String str) {
+		int ans = (1 << str.length()) - 2;
+		int pos = 0;
+		for (int i = str.length() - 1; i >= 0; i--) {
+			if (str.charAt(i) == '7') {
+				ans += (1 << pos);
+			}
+			pos++;
+		}
+		return ans + 1;
+	}
+
+}
+
+
+package Nov_BitMasking_Qps;
+
+public class SubSequnce {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String str="abc";
+				Sub_Seq(str);
+
+	}
+
+	private static void Sub_Seq(String str) {
+		// TODO Auto-generated method stub
+		for(int i=0; i<(1<<str.length()); i++ ){
+			print_pattren(str, i);
+			
+		}
+		
+	}
+	public static void print_pattren(String str, int i) {
+		 int pos=0;
+		 while(i!=0) {
+			 if((i&1)==1) {
+				 System.out.print(str.charAt(pos));
+			 }
+			 pos++;
+			 i>>=1;
+		 }
+		 System.out.println();
+		
+	}
+
+}
+
+
+package Nov_BitMasking_Qps;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Unique_Number_III {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[] arr = new int[n];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = sc.nextInt();
+		}
+		boolean a=2>3?true:false;
+		System.out.println(a);
+		System.out.println(UniqueNumberIII(arr));
+
+	}
+
+	public static int UniqueNumberIII(int arr[]) {
+		int[] ans = new int[32];
+		for (int i = 0; i < arr.length; i++) {
+			int j = 0;
+			int val = arr[i];
+			while (val != 0) {
+				if ((val & 1) == 1) {
+					ans[j]++;
+				}
+				j++;
+				val >>= 1;
+			}
+
+		}
+		for (int i = 0; i < ans.length; i++) {
+			ans[i] = ans[i] % 3;
+		}
+		int mul = 1;
+		int res = 0;
+		for (int i = 0; i < ans.length; i++) {
+			res += (ans[i] * mul);
+			mul <<= 1;
+		}
+
+		return res;
+
+	}
+
+}
